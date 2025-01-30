@@ -9,7 +9,6 @@ class Translation {
     required this.timestamp,
   });
 
-  // Convert Translation object to Map for storage
   Map<String, dynamic> toMap() {
     return {
       'inputText': inputText,
@@ -18,7 +17,6 @@ class Translation {
     };
   }
 
-  // Create Translation object from Map
   factory Translation.fromMap(Map<String, dynamic> map) {
     return Translation(
       inputText: map['inputText'] ?? '',

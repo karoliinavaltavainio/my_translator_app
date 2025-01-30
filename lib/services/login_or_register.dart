@@ -15,10 +15,8 @@ class _LoginOrRegisterState extends State<LoginOrRegister> {
 
   Future<void> _signInWithGoogle() async {
     try {
-      // Call the AuthService method
       await _authService.signInWithGoogle();
 
-      // If sign-in is successful, navigate to the HomeScreen (or whichever screen you want)
 
     } catch (e) {
       // If sign-in fails or is canceled, show an error
@@ -38,7 +36,7 @@ class _LoginOrRegisterState extends State<LoginOrRegister> {
         child: ElevatedButton.icon(
           onPressed: _signInWithGoogle,
           icon: const Icon(
-            Icons.login, // Not the official G logo, but a placeholder icon
+            Icons.login,
             size: 20,
           ),
           label: const Text(
@@ -46,9 +44,9 @@ class _LoginOrRegisterState extends State<LoginOrRegister> {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white,    // Button background color
-            foregroundColor: Colors.black87,  // Text & Icon color
-            minimumSize: const Size(200, 50), // Set a custom minimum size
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.black87,
+            minimumSize: const Size(200, 50),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),

@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
-import '../models/translation.dart'; // Adjust the path if necessary
+import '../models/translation.dart';
 import '../controllers/translation_controller.dart';
 
-/// A screen that displays the translation history.
 class HistoryScreen extends StatefulWidget {
-  /// The list of translations to display.
   final List<Translation> history;
 
-  /// Creates a [HistoryScreen].
-  ///
-  /// The [history] parameter must not be null.
   const HistoryScreen({Key? key, required this.history}) : super(key: key);
 
   @override
@@ -17,10 +12,8 @@ class HistoryScreen extends StatefulWidget {
 }
 
 class _HistoryScreenState extends State<HistoryScreen> {
-  // We use this to call clearHistory()
   final TranslationController translationController = TranslationController();
 
-  // Confirm user wants to clear all
   void _confirmClear() {
     showDialog(
       context: context,
@@ -44,7 +37,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
     );
   }
 
-  // Actually clear the history in SharedPreferences and from the list
   Future<void> _clearHistory() async {
     await translationController.clearHistory();
     setState(() {
@@ -100,7 +92,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
 
   String _formatTimestamp(DateTime timestamp) {
-    // Example format: "14:30 on 21/04/2023"
     String hour = timestamp.hour.toString().padLeft(2, '0');
     String minute = timestamp.minute.toString().padLeft(2, '0');
     String day = timestamp.day.toString().padLeft(2, '0');

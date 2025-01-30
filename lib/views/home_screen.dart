@@ -5,7 +5,7 @@ import '../models/translation.dart';
 import 'history_screen.dart';
 import '../widgets/custom_app_bar.dart';
 import '../widgets/history_button.dart';
-import '../services/auth_service.dart';  // <-- Import the AuthService
+import '../services/auth_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,7 +19,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final TranslationController translationController = TranslationController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  // For sign out
   final AuthService _authService = AuthService();
 
   String inputText = '';
@@ -86,9 +85,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _signOut() async {
     await _authService.signOut();
-    // No manual navigation is needed here.
-    // AuthGate will detect that the user is signed out
-    // and automatically show the LoginOrRegister screen.
   }
 
   @override
@@ -113,7 +109,6 @@ class _HomeScreenState extends State<HomeScreen> {
             iconColor: Colors.black,
           ),
 
-          // Sign Out button
           IconButton(
             icon: const Icon(Icons.logout),
             color: Colors.black,

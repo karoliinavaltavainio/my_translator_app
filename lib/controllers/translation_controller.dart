@@ -7,7 +7,6 @@ class TranslationController {
   final translator.GoogleTranslator _translator = translator.GoogleTranslator();
   static const String historyKey = 'translation_history';
 
-  // Load translation history from SharedPreferences
   Future<List<Translation>> loadHistory() async {
     final prefs = await SharedPreferences.getInstance();
     final String? historyJson = prefs.getString(historyKey);
@@ -16,7 +15,6 @@ class TranslationController {
     return decoded.map<Translation>((item) => Translation.fromMap(item)).toList();
   }
 
-  // Save translation history to SharedPreferences
   Future<void> saveHistory(List<Translation> history) async {
     final prefs = await SharedPreferences.getInstance();
     List<Map<String, dynamic>> historyMap =
@@ -25,13 +23,11 @@ class TranslationController {
     await prefs.setString(historyKey, historyJson);
   }
 
-  // Clear entire translation history
   Future<void> clearHistory() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(historyKey);
   }
 
-  // Translate text and add to history
   Future<String> translateText(
       String text,
       String fromLanguage,

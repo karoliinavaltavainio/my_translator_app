@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "657733065026",
+    "project_id": "karocourseproject",
+    "storage_bucket": "karocourseproject.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:657733065026:android:adcaf3f5570df79ade10db",
+        "android_client_info": {
+          "package_name": "com.example.karoliina_courseproject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBie6s_x2UNtBxHwodA7UwWTpHut7sKbA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

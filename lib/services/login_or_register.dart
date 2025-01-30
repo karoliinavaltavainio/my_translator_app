@@ -19,7 +19,6 @@ class _LoginOrRegisterState extends State<LoginOrRegister> {
 
 
     } catch (e) {
-      // If sign-in fails or is canceled, show an error
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Sign-in failed: $e')),
       );

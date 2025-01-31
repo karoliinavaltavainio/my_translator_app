@@ -28,6 +28,15 @@ class TranslationController {
     await prefs.remove(historyKey);
   }
 
+  Future<void> deleteTranslation(Translation translation) async {
+    List<Translation> currentHistory = await loadHistory();
+    currentHistory.removeWhere((t) =>
+    t.timestamp == translation.timestamp &&
+        t.inputText == translation.inputText &&
+        t.translatedText == translation.translatedText);
+    await saveHistory(currentHistory);
+  }
+
   Future<String> translateText(
       String text,
       String fromLanguage,
@@ -35,7 +44,8 @@ class TranslationController {
         required List<Translation> currentHistory,
       }) async {
     try {
-      final translation = await _translator.translate(text, from: fromLanguage, to: toLanguage);
+      final translation = await _translator.translate(
+          text, from: fromLanguage, to: toLanguage);
       final newTranslation = Translation(
         inputText: text,
         translatedText: translation.text,
@@ -46,7 +56,7 @@ class TranslationController {
       return translation.text;
     } catch (e) {
       print("Error in TranslationController: $e");
-      return "Error: Unable to translate";
+      throw Exception("Unable to translate");
     }
   }
 }

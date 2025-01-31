@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import '../controllers/translation_controller.dart';
 import '../models/translation.dart';
 import 'history_screen.dart';
@@ -15,7 +14,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final outputController = TextEditingController(text: "Result here...");
+  final outputController = TextEditingController();
   final TranslationController translationController = TranslationController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -31,6 +30,12 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     loadTranslationHistory();
+  }
+
+  @override
+  void dispose() {
+    outputController.dispose();
+    super.dispose();
   }
 
   Future<void> loadTranslationHistory() async {
@@ -56,12 +61,12 @@ class _HomeScreenState extends State<HomeScreen> {
           currentHistory: translationHistory,
         );
 
-        Navigator.of(context).pop();
+        Navigator.of(context).pop(); // Close loading dialog
         setState(() {
           outputController.text = translated;
         });
       } catch (e) {
-        Navigator.of(context).pop();
+        Navigator.of(context).pop(); // Close loading dialog
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text("Translation failed: $e"),
@@ -83,6 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  /// Signs the user out
   Future<void> _signOut() async {
     await _authService.signOut();
   }
@@ -91,20 +97,35 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: "Karoliinas Translator App",
+        title: "KaroLingo",
         actions: [
           HistoryButton(
-            onPressed: () {
-              Navigator.of(context).push(
+            onPressed: () async {
+              final historyModified = await Navigator.of(context).push<bool>(
                 PageRouteBuilder(
                   pageBuilder: (context, animation, secondaryAnimation) =>
                       HistoryScreen(history: translationHistory),
-                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
                     return FadeTransition(opacity: animation, child: child);
                   },
                   transitionDuration: const Duration(milliseconds: 300),
                 ),
               );
+
+              if (historyModified == true) {
+                setState(() {
+                  outputController.clear();
+                });
+                await loadTranslationHistory(); // Reload history after deletion
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content:
+                    Text("Translated text cleared due to history deletion."),
+                    backgroundColor: Colors.blueAccent,
+                  ),
+                );
+              }
             },
             iconColor: Colors.black,
           ),
@@ -124,18 +145,20 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: const EdgeInsets.all(16),
             child: Form(
               key: _formKey,
+              autovalidateMode:
+              AutovalidateMode.disabled,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Card(
-                    elevation: 4,
+                    elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(12),
                       child: Image.asset(
-                        "images/languages.jpg",
+                        "images/KARO-2.png",
                         fit: BoxFit.cover,
                         height: 250,
                       ),
@@ -219,10 +242,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     label: const Text("Translate"),
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 16),
-                      textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      textStyle: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.bold),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
+                      backgroundColor: Theme.of(context).colorScheme.primary,
                     ),
                   ),
                   const SizedBox(height: 24),
@@ -230,7 +255,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     controller: outputController,
                     maxLines: 5,
                     decoration: const InputDecoration(
-                      labelText: "Translated Text",
+                      labelText: "Translated text",
                       hintText: "Result here...",
                       border: OutlineInputBorder(),
                     ),

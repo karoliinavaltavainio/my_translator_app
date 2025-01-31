@@ -22,12 +22,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
         content: const Text("Are you sure you want to delete all history?"),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(), // Cancel
+            onPressed: () => Navigator.of(context).pop(),
             child: const Text("Cancel"),
           ),
           TextButton(
             onPressed: () {
-              Navigator.of(context).pop(); // Close the dialog
+              Navigator.of(context).pop();
               _clearHistory();
             },
             child: const Text("Delete", style: TextStyle(color: Colors.red)),
@@ -42,6 +42,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
     setState(() {
       widget.history.clear();
     });
+
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text("History cleared successfully!"),
@@ -59,7 +60,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
           IconButton(
             icon: const Icon(Icons.delete),
             tooltip: "Clear History",
-            onPressed: _confirmClear,
+            onPressed: widget.history.isEmpty ? null : _confirmClear,
           ),
         ],
       ),

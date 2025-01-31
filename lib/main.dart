@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'views/home_screen.dart';
 import 'views/history_screen.dart';
 import 'models/translation.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -33,18 +32,18 @@ class MyApp extends StatelessWidget {
           onPrimary: Colors.white,
         ),
 
-        fontFamily: 'Roboto',
+        fontFamily: 'Montserrat',
 
         textTheme: const TextTheme(
           headlineLarge: TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold),
           headlineMedium: TextStyle(fontSize: 18.0, fontStyle: FontStyle.normal),
-          bodyLarge: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+          bodyLarge: TextStyle(fontSize: 14.0, fontFamily: 'Montserrat'),
         ),
 
         inputDecorationTheme: const InputDecorationTheme(
           border: OutlineInputBorder(),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.deepOrange, width: 2.0),
+            borderSide: BorderSide(color: Colors.black87, width: 2.0),
           ),
           labelStyle: TextStyle(color: Colors.black),
         ),

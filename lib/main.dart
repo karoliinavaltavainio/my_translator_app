@@ -50,8 +50,8 @@ class MyApp extends StatelessWidget {
 
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.orangeAccent, // Background color
-            foregroundColor: Colors.white,         // Text color
+            backgroundColor: Colors.orangeAccent,
+            foregroundColor: Colors.white,
             textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),

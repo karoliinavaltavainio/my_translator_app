@@ -61,12 +61,12 @@ class _HomeScreenState extends State<HomeScreen> {
           currentHistory: translationHistory,
         );
 
-        Navigator.of(context).pop(); // Close loading dialog
+        Navigator.of(context).pop();
         setState(() {
           outputController.text = translated;
         });
       } catch (e) {
-        Navigator.of(context).pop(); // Close loading dialog
+        Navigator.of(context).pop();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text("Translation failed: $e"),
@@ -88,7 +88,6 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  /// Signs the user out
   Future<void> _signOut() async {
     await _authService.signOut();
   }
@@ -117,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 setState(() {
                   outputController.clear();
                 });
-                await loadTranslationHistory(); // Reload history after deletion
+                await loadTranslationHistory();
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content:

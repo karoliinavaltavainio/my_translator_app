@@ -20,9 +20,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final AuthService _authService = AuthService();
 
-  String inputText = '';
-  String inputLanguage = 'en';
-  String outputLanguage = 'fr';
+  String inputLanguage = 'et';
+  String outputLanguage = 'en';
+
+  final Map<String, String> languageMap = {
+    'Estonian': 'et',
+    'English': 'en',
+    'French': 'fr',
+    'Spanish': 'es',
+    'German': 'de',
+    'Russian': 'ru',
+    'Hindi': 'hi',
+  };
 
   List<Translation> translationHistory = [];
 
@@ -30,12 +39,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     loadTranslationHistory();
-  }
-
-  @override
-  void dispose() {
-    outputController.dispose();
-    super.dispose();
   }
 
   Future<void> loadTranslationHistory() async {
@@ -92,6 +95,8 @@ class _HomeScreenState extends State<HomeScreen> {
     await _authService.signOut();
   }
 
+  String inputText = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,8 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 await loadTranslationHistory();
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content:
-                    Text("Translated text cleared due to history deletion."),
+                    content: Text("Translated text cleared due to history deletion."),
                     backgroundColor: Colors.blueAccent,
                   ),
                 );
@@ -128,7 +132,6 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             iconColor: Colors.black,
           ),
-
           IconButton(
             icon: const Icon(Icons.logout),
             color: Colors.black,
@@ -144,8 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: const EdgeInsets.all(16),
             child: Form(
               key: _formKey,
-              autovalidateMode:
-              AutovalidateMode.disabled,
+              autovalidateMode: AutovalidateMode.disabled,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -164,12 +166,19 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   const SizedBox(height: 24),
+
                   TextFormField(
                     maxLines: 5,
-                    decoration: const InputDecoration(
+                    maxLength: 2000,
+                    decoration: InputDecoration(
                       labelText: "Enter text to translate",
                       hintText: "Type here...",
-                      border: OutlineInputBorder(),
+                      border: const OutlineInputBorder(),
+                      counterText: "",
+                      suffix: Text(
+                        "${inputText.length}/2000",
+                        style: const TextStyle(fontSize: 12, color: Colors.grey),
+                      ),
                     ),
                     onChanged: (value) {
                       setState(() {
@@ -184,6 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                   ),
                   const SizedBox(height: 24),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -199,11 +209,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               inputLanguage = newValue!;
                             });
                           },
-                          items: <String>['en', 'fr', 'es', 'de', 'ur', 'hi']
-                              .map<DropdownMenuItem<String>>((String value) {
+                          items: languageMap.entries.map((entry) {
                             return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value.toUpperCase()),
+                              value: entry.value,
+                              child: Text(entry.key),
                             );
                           }).toList(),
                         ),
@@ -211,6 +220,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       const SizedBox(width: 16),
                       const Icon(Icons.swap_horiz, color: Colors.orangeAccent),
                       const SizedBox(width: 16),
+
                       Expanded(
                         child: DropdownButtonFormField<String>(
                           value: outputLanguage,
@@ -223,11 +233,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               outputLanguage = newValue!;
                             });
                           },
-                          items: <String>['en', 'fr', 'es', 'de', 'ur', 'hi']
-                              .map<DropdownMenuItem<String>>((String value) {
+                          items: languageMap.entries.map((entry) {
                             return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value.toUpperCase()),
+                              value: entry.value,
+                              child: Text(entry.key),
                             );
                           }).toList(),
                         ),
@@ -235,6 +244,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                   const SizedBox(height: 24),
+
                   ElevatedButton.icon(
                     onPressed: translateText,
                     icon: const Icon(Icons.translate),
@@ -242,7 +252,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       textStyle: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.bold),
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -250,16 +262,19 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   const SizedBox(height: 24),
-                  TextFormField(
-                    controller: outputController,
-                    maxLines: 5,
-                    decoration: const InputDecoration(
-                      labelText: "Translated text",
-                      hintText: "Result here...",
-                      border: OutlineInputBorder(),
-                    ),
-                    readOnly: true,
-                  ),
+
+              TextFormField(
+                controller: outputController,
+                maxLines: 5,
+                maxLength: 2000,
+                decoration: const InputDecoration(
+                  labelText: "Translated text",
+                  hintText: "Result here...",
+                  border: OutlineInputBorder(),
+                  counterText: "",
+                ),
+                readOnly: true,
+                 ),
                 ],
               ),
             ),

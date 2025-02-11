@@ -1,10 +1,9 @@
-import 'package:translator/translator.dart' as translator;
-import '../models/translation.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../services/translation_service.dart';
+import '../models/translation.dart';
 
 class TranslationController {
-  final translator.GoogleTranslator _translator = translator.GoogleTranslator();
   static const String historyKey = 'translation_history';
 
   Future<List<Translation>> loadHistory() async {
@@ -44,16 +43,22 @@ class TranslationController {
         required List<Translation> currentHistory,
       }) async {
     try {
-      final translation = await _translator.translate(
-          text, from: fromLanguage, to: toLanguage);
+      final translatedText = await TranslationService.translateText(
+        text,
+        toLanguage,
+        fromLanguage,
+      );
+
       final newTranslation = Translation(
         inputText: text,
-        translatedText: translation.text,
+        translatedText: translatedText,
         timestamp: DateTime.now(),
       );
+
       currentHistory.add(newTranslation);
       await saveHistory(currentHistory);
-      return translation.text;
+
+      return translatedText;
     } catch (e) {
       print("Error in TranslationController: $e");
       throw Exception("Unable to translate");

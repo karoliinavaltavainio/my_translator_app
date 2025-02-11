@@ -4,7 +4,7 @@ import 'models/translation.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
-import 'services/auth_gate.dart';
+import 'views/auth_gate.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,12 +32,12 @@ class MyApp extends StatelessWidget {
           onPrimary: Colors.white,
         ),
 
-        fontFamily: 'Montserrat',
+        fontFamily: 'Roboto',
 
         textTheme: const TextTheme(
           headlineLarge: TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold),
           headlineMedium: TextStyle(fontSize: 18.0, fontStyle: FontStyle.normal),
-          bodyLarge: TextStyle(fontSize: 14.0, fontFamily: 'Montserrat'),
+          bodyLarge: TextStyle(fontSize: 14.0, fontFamily: 'Roboto'),
         ),
 
         inputDecorationTheme: const InputDecorationTheme(
